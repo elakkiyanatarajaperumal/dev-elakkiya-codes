@@ -1,0 +1,624 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Elakkiya Natarajaperumal - NEON CORE Portfolio 2025</title>
+  <script src="https://cdn.tailwindcss.com"></script>
+  <script src="https://unpkg.com/three@0.126.1/build/three.min.js"></script>
+  <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400;700;900&family=Rajdhani:wght@300;500;700&family=Space+Grotesk:wght@400;700&display=swap" rel="stylesheet">
+  <style>
+    @import url('https://fonts.googleapis.com/css2?family=Orbitron:wght@400;700;900&family=Rajdhani:wght@300;500;700&family=Space+Grotesk:wght@400;700&display=swap');
+    
+    * { margin: 0; padding: 0; box-sizing: border-box; }
+    
+    body {
+      background: #0a0a0a;
+      color: #fff;
+      font-family: 'Rajdhani', sans-serif;
+      overflow-x: hidden;
+      line-height: 1.6;
+    }
+    
+    :root {
+      --quantum-cyan: #00ffff;
+      --quantum-magenta: #ff00ff;
+      --quantum-emerald: #00ff88;
+      --quantum-aurora: #ffaa00;
+      --quantum-violet: #aa00ff;
+      --dark-bg: #0a0a0a;
+      --glass-bg: rgba(255,255,255,0.03);
+      --glass-border: rgba(255,255,255,0.08);
+      --neon-glow: 0 0 20px rgba(0,255,255,0.5);
+    }
+    
+    #matrix-bg { 
+      position: fixed; 
+      top: 0; 
+      left: 0; 
+      z-index: -1;
+      width: 100vw;
+      height: 100vh;
+    }
+    
+    .container { max-width: 1200px; margin: 0 auto; padding: 0 1rem; }
+    @media (max-width: 768px) {
+      .container { padding: 0 0.75rem; }
+      .hero-padding { padding: 2rem 0 !important; }
+      .section-padding { padding: 2rem 0 !important; }
+      .btn-stack { flex-direction: column !important; gap: 1rem !important; }
+    }
+    
+    .java-quote {
+      font-family: 'Orbitron', monospace;
+      font-size: clamp(1rem, 3vw, 1.5rem);
+      background: linear-gradient(45deg, var(--quantum-emerald), var(--quantum-cyan));
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      background-clip: text;
+      text-align: center;
+      padding: 1.5rem 1rem;
+      margin-bottom: 1rem;
+    }
+    
+    /* Hero image + speech bubble */
+    .hero-photo-wrapper {
+      position: relative;
+      display: inline-block;
+    }
+
+    .hero-photo {
+      width: 180px;
+      height: 180px;
+      border-radius: 50%;
+      object-fit: cover;
+      border: 4px solid var(--quantum-cyan);
+      box-shadow: 0 0 30px rgba(0,255,255,0.7);
+      margin: 0 auto 1.5rem;
+      transition: all 0.3s ease;
+      display: block;
+      cursor: pointer;
+    }
+    .hero-photo:hover {
+      transform: scale(1.05);
+      box-shadow: 0 0 45px rgba(0,255,255,0.9);
+    }
+    @media (max-width: 640px) {
+      .hero-photo { width: 140px; height: 140px; }
+    }
+
+    .intro-bubble {
+      position: absolute;
+      top: 50%;
+      left: 115%;
+      transform: translateY(-50%);
+      width: min(280px, 70vw);
+      background: rgba(0, 0, 0, 0.9);
+      border: 1px solid var(--quantum-cyan);
+      box-shadow: 0 0 20px rgba(0,255,255,0.6);
+      border-radius: 18px;
+      padding: 1rem 1.25rem;
+      text-align: left;
+      z-index: 20;
+      animation: bubble-in 0.25s ease-out;
+    }
+
+    .intro-bubble::before {
+      content: '';
+      position: absolute;
+      left: -12px;
+      top: 50%;
+      transform: translateY(-50%);
+      border-width: 8px;
+      border-style: solid;
+      border-color: transparent rgba(0,255,255,0.8) transparent transparent;
+    }
+
+    .intro-title {
+      font-family: 'Orbitron', sans-serif;
+      font-size: 0.95rem;
+      color: var(--quantum-cyan);
+      margin-bottom: 0.35rem;
+    }
+
+    .intro-text {
+      font-size: 0.85rem;
+      color: #e5faff;
+      line-height: 1.4;
+    }
+
+    .hidden { display: none; }
+
+    @keyframes bubble-in {
+      from { opacity: 0; transform: translate(-10px, -50%); }
+      to   { opacity: 1; transform: translate(0, -50%); }
+    }
+
+    @media (max-width: 768px) {
+      .intro-bubble {
+        left: 50%;
+        top: 115%;
+        transform: translate(-50%, 0);
+      }
+      .intro-bubble::before {
+        left: 50%;
+        top: -10px;
+        transform: translateX(-50%);
+        border-color: transparent transparent rgba(0,255,255,0.8) transparent;
+      }
+    }
+    
+    .neon-title {
+      position: relative;
+      text-shadow: 
+        0 0 10px var(--quantum-cyan),
+        0 0 20px var(--quantum-cyan),
+        0 0 30px var(--quantum-magenta),
+        0 0 40px var(--quantum-emerald);
+      animation: neon-glow 2s ease-in-out infinite alternate;
+      text-align: center;
+    }
+    @keyframes neon-glow {
+      from { 
+        text-shadow: 
+          0 0 10px var(--quantum-cyan),
+          0 0 20px var(--quantum-cyan),
+          0 0 30px var(--quantum-magenta),
+          0 0 40px var(--quantum-emerald);
+      }
+      to { 
+        text-shadow: 
+          0 0 20px var(--quantum-cyan),
+          0 0 30px var(--quantum-magenta),
+          0 0 40px var(--quantum-emerald),
+          0 0 50px var(--quantum-cyan);
+      }
+    }
+    
+    .email-link {
+      color: var(--quantum-cyan);
+      text-decoration: none;
+      border-bottom: 1px solid transparent;
+      transition: all 0.3s ease;
+      font-weight: 500;
+    }
+    .email-link:hover {
+      color: var(--quantum-emerald);
+      text-shadow: 0 0 10px var(--quantum-emerald);
+      border-bottom-color: var(--quantum-emerald);
+    }
+    
+    .glass-card {
+      background: var(--glass-bg);
+      backdrop-filter: blur(20px);
+      border: 1px solid var(--glass-border);
+      border-radius: 24px;
+      padding: 1.5rem;
+      transition: all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+      position: relative;
+      overflow: hidden;
+      margin-bottom: 1rem;
+    }
+    .glass-card::before {
+      content: '';
+      position: absolute;
+      top: 0; left: 0; right: 0; bottom: 0;
+      background: linear-gradient(45deg, transparent 30%, rgba(0,255,255,0.1) 50%, transparent 70%);
+      animation: shimmer 3s infinite;
+      opacity: 0;
+      transition: opacity 0.3s;
+    }
+    .glass-card:hover::before { opacity: 1; }
+    .glass-card:hover {
+      transform: translateY(-8px);
+      box-shadow: var(--neon-glow), 0 24px 48px rgba(0,0,0,0.5);
+    }
+    @keyframes shimmer { 0% { transform: translateX(-100%) skewX(-15deg); } 100% { transform: translateX(200%) skewX(-15deg); } }
+    
+    .skill-bar, .lang-bar {
+      width: 100%; height: 12px;
+      background: rgba(255,255,255,0.08);
+      border-radius: 8px;
+      overflow: hidden;
+      margin: 10px 0;
+    }
+    .skill-bar-fill, .lang-bar-fill {
+      height: 100%;
+      background: linear-gradient(90deg, var(--quantum-cyan), var(--quantum-magenta), var(--quantum-emerald));
+      background-size: 200% 100%;
+      animation: neon-flow 2s linear infinite;
+      transition: width 1.5s cubic-bezier(0.68, -0.55, 0.265, 1.55);
+    }
+    @keyframes neon-flow { 0% { background-position: 200% 0; } 100% { background-position: -200% 0; } }
+    
+    .terminal-btn {
+      background: rgba(0,255,255,0.1);
+      border: 2px solid var(--quantum-cyan);
+      color: var(--quantum-cyan);
+      padding: 0.875rem 1.5rem;
+      font-family: 'Orbitron', monospace;
+      font-weight: 700;
+      text-transform: uppercase;
+      letter-spacing: 1.5px;
+      text-decoration: none;
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      min-width: 200px;
+      border-radius: 12px;
+      font-size: 0.95rem;
+      position: relative;
+      overflow: hidden;
+    }
+    .terminal-btn::before {
+      content: '';
+      position: absolute; top: 0; left: -100%; width: 100%; height: 100%;
+      background: linear-gradient(90deg, transparent, rgba(255,255,255,0.3), transparent);
+      transition: left 0.5s;
+    }
+    .terminal-btn:hover::before { left: 100%; }
+    .terminal-btn:hover {
+      background: var(--quantum-cyan);
+      color: #000;
+      box-shadow: 0 0 30px var(--quantum-cyan);
+      transform: scale(1.05);
+    }
+    
+    .download-btn::after {
+      content: '↓ DOWNLOAD RESUME';
+      position: absolute; top: 0; left: -100%; width: 100%; height: 100%;
+      background: rgba(255,0,255,0.2);
+      display: flex; align-items: center; justify-content: center;
+      font-weight: bold; font-size: 0.85em;
+      transition: left 0.3s ease;
+    }
+    .download-btn:active::after { left: 0; }
+    
+    .section {
+      opacity: 0; transform: translateY(40px);
+      transition: all 0.8s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+      padding: 3rem 0;
+    }
+    .section.visible { opacity: 1; transform: translateY(0); }
+    
+    .skills-grid { 
+      display: grid; 
+      grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)); 
+      gap: 1.5rem; 
+    }
+    
+    @keyframes resume-pulse {
+      0%, 100% { box-shadow: 0 0 20px rgba(0,255,255,0.5); }
+      50% { box-shadow: 0 0 40px rgba(0,255,255,0.8), 0 0 60px rgba(0,255,255,0.4); }
+    }
+    .resume-download { animation: resume-pulse 2s infinite; }
+    
+    .hero-title { font-size: clamp(2.5rem, 8vw, 5rem); line-height: 1.1; }
+    .hero-subtitle { font-size: clamp(1.1rem, 4vw, 1.75rem); }
+  </style>
+</head>
+<body>
+  <canvas id="matrix-bg"></canvas>
+  
+  <div class="java-quote">
+    "Write Once, Run Anywhere" — James Gosling, Java Creator
+  </div>
+  
+  <!-- HERO -->
+  <header class="relative z-10 text-center hero-padding">
+    <div class="container">
+
+      <div class="hero-photo-wrapper">
+        <!-- place Elakkiya.jpeg next to index.html -->
+        <img src="Elakkiya.jpeg" alt="Elakkiya Natarajaperumal" class="hero-photo" id="hero-photo" loading="lazy">
+        <div id="intro-bubble" class="intro-bubble hidden">
+          <p class="intro-title">Hi, I'm Elakkiya 👋</p>
+          <p class="intro-text">
+            Curious Java dev focused on writing clean code, solving problems smartly, and building apps that feel effortless and experimental core.
+          </p>
+        </div>
+      </div>
+
+      <h1 class="hero-title font-black mb-6 neon-title">ELAKKIYA NATARAJAPERUMAL</h1>
+      <p class="hero-subtitle text-cyan-400 font-medium mb-8 tracking-wider">MCA | JAVA DEVELOPER</p>
+      
+      <div class="flex flex-col sm:flex-row btn-stack gap-4 justify-center items-center mb-8">
+        <a href="#skills" class="terminal-btn">ENTER SKILLS TERMINAL →</a>
+        <a id="download-resume" class="terminal-btn resume-download download-btn">
+          📄 RESUME DOWNLOAD
+        </a>
+      </div>
+      
+      <div class="glass-card inline-flex flex-col sm:flex-row items-center gap-3 px-6 py-4 max-w-2xl mx-auto">
+        <a href="mailto:elakkiyanatarajaperumal@gmail.com" class="email-link font-mono text-sm sm:text-base">
+          elakkiyanatarajaperumal@gmail.com
+        </a>
+        <a 
+          href="https://www.linkedin.com/in/elakkiya-natarajaperumal" 
+          target="_blank" 
+          rel="noopener noreferrer"
+          class="email-link font-mono text-sm sm:text-base"
+        >
+          LinkedIn: /in/elakkiya-natarajaperumal
+        </a>
+        <span class="text-emerald-400 font-mono text-sm sm:text-base">
+          Dindigul | PSNA TECH
+        </span>
+      </div>
+    </div>
+  </header>
+
+  <!-- ABOUT -->
+  <section id="about" class="section section-padding">
+    <div class="container">
+      <div class="text-center mb-16">
+        <h2 class="text-4xl md:text-5xl font-black neon-title mb-8">NEURAL CORE</h2>
+        <p class="text-lg md:text-xl text-gray-300 max-w-3xl mx-auto leading-relaxed">
+          Java developer specializing in cloud infrastructure and enterprise applications. 
+          Building secure, scalable systems with modern development practices.
+        </p>
+      </div>
+    </div>
+  </section>
+
+  <!-- EDUCATION -->
+  <section id="education" class="section section-padding bg-black/20">
+    <div class="container">
+      <h2 class="text-4xl md:text-5xl font-black text-center mb-12 neon-title">EDUCATION MATRIX</h2>
+      <div class="grid md:grid-cols-2 gap-6 lg:gap-8">
+        <div class="glass-card">
+          <h3 class="text-2xl md:text-3xl font-black mb-4 text-cyan-400">MCA 2024-2026</h3>
+          <p class="text-gray-400 mb-4 text-sm md:text-base">
+            PSNA College of Engineering and Technology, Dindigul
+          </p>
+        </div>
+        <div class="glass-card">
+          <h3 class="text-2xl md:text-3xl font-black mb-4 text-emerald-400">B.Sc. CS 2021-2024</h3>
+          <p class="text-gray-400 mb-4 text-sm md:text-base">G.T.N. Arts College, Dindigul</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- PROJECTS -->
+  <section id="projects" class="section section-padding">
+    <div class="container">
+      <div class="text-center">
+        <h2 class="text-4xl md:text-5xl font-black mb-12 neon-title">PROJECTS</h2>
+
+        <div class="glass-card max-w-4xl mx-auto mb-10">
+          <h3 class="text-2xl md:text-3xl font-black mb-4 text-magenta-400">
+            CLOUD FILE TRANSFER SYSTEM (USING JAVA)
+          </h3>
+          <p class="text-gray-300 text-lg leading-relaxed">
+            Java-powered cloud automation with enterprise-grade security protocols, 
+            scheduling secure file transfers across cloud storage to improve reliability and efficiency.
+          </p>
+          <p class="mt-4 text-sm text-cyan-300">
+            Technologies: Core Java, JDBC, Multi-threading, File I/O, Cloud APIs
+          </p>
+        </div>
+
+        <div class="glass-card max-w-4xl mx-auto">
+          <h3 class="text-2xl md:text-3xl font-black mb-4 text-emerald-400">
+            MINI PROJECT – ANGLOPHONE LINGUISTIC ANALYZER
+          </h3>
+          <p class="text-gray-300 text-lg leading-relaxed">
+            Web-based emotion and sentiment analyzer for English sentences that classifies tone 
+            and suggests softer alternative phrases to improve communication quality.
+          </p>
+          <p class="mt-4 text-sm text-cyan-300">
+            Technologies: Python, Flask, HTML, CSS, JavaScript, Basic NLP, Machine Learning model integration
+          </p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- SKILLS -->
+  <section id="skills" class="section section-padding">
+    <div class="container">
+      <h2 class="text-4xl md:text-5xl font-black text-center mb-16 neon-title">SKILL TERMINAL</h2>
+      <div class="skills-grid">
+        <div class="glass-card text-center">
+          <h4 class="text-xl md:text-2xl font-bold mb-4 text-emerald-400">JAVA</h4>
+          <div class="skill-bar mx-auto max-w-md"><div class="skill-bar-fill" style="width: 88%"></div></div>
+          <span class="text-sm md:text-base text-gray-400 block mt-3">ENTERPRISE BACKENDS</span>
+        </div>
+        <div class="glass-card text-center">
+          <h4 class="text-xl md:text-2xl font-bold mb-4 text-cyan-400">PYTHON</h4>
+          <div class="skill-bar mx-auto max-w-md"><div class="skill-bar-fill" style="width: 65%"></div></div>
+          <span class="text-sm md:text-base text-gray-400 block mt-3">SCRIPTING & TOOLS</span>
+        </div>
+        <div class="glass-card text-center">
+          <h4 class="text-xl md:text-2xl font-bold mb-4 text-magenta-400">OCI CLOUD</h4>
+          <div class="skill-bar mx-auto max-w-md"><div class="skill-bar-fill" style="width: 87%"></div></div>
+          <span class="text-sm md:text-base text-gray-400 block mt-3">CLOUD DEPLOYMENT</span>
+        </div>
+        <div class="glass-card text-center">
+          <h4 class="text-xl md:text-2xl font-bold mb-4 text-aurora-400">HTML/CSS/JS</h4>
+          <div class="skill-bar mx-auto max-w-md"><div class="skill-bar-fill" style="width: 92%"></div></div>
+          <span class="text-sm md:text-base text-gray-400 block mt-3">FRONTEND DEVELOPMENT</span>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- LANGUAGES & CERTS -->
+  <section id="languages" class="section section-padding bg-black/20">
+    <div class="container">
+      <div class="grid md:grid-cols-2 gap-8 lg:gap-12">
+        <div>
+          <h2 class="text-3xl md:text-4xl font-black mb-10 neon-title">PROTOCOLS</h2>
+          <div class="space-y-6">
+            <div class="glass-card">
+              <h4 class="font-bold mb-3 text-xl text-cyan-400">TAMIL</h4>
+              <div class="lang-bar mx-auto max-w-xs"><div class="lang-bar-fill" style="width: 100%"></div></div>
+              <span class="text-gray-400 block text-center mt-2">NATIVE</span>
+            </div>
+            <div class="glass-card">
+              <h4 class="font-bold mb-3 text-xl text-emerald-400">ENGLISH</h4>
+              <div class="lang-bar mx-auto max-w-xs"><div class="lang-bar-fill" style="width: 90%"></div></div>
+              <span class="text-gray-400 block text-center mt-2">PROFESSIONAL</span>
+            </div>
+          </div>
+        </div>
+        <div>
+          <h2 class="text-3xl md:text-4xl font-black mb-10 neon-title">CERTS</h2>
+          <div class="space-y-4 max-h-96 overflow-y-auto pr-2 md:pr-4">
+            <div class="glass-card p-6 text-sm md:text-base">OCI AI Foundations Associate ✓</div>
+            <div class="glass-card p-6 text-sm md:text-base">Python Essentials 1 & 2 Cisco ✓</div>
+            <div class="glass-card p-6 text-sm md:text-base">C++ Advanced Training ✓</div>
+            <div class="glass-card p-6 text-sm md:text-base">AI Workshop Abhinav Devagupta ✓</div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- FOOTER -->
+  <footer class="py-12 px-6 text-center text-gray-400 border-t border-white/10">
+    <div class="container">
+      <div class="space-y-4">
+        <p class="text-lg font-mono">DINDIGUL QUADRANT | PSNA TECH CORE | 2025</p>
+        <p class="font-mono text-base flex flex-col sm:flex-row items-center justify-center gap-1 sm:gap-2">
+          <a href="mailto:elakkiyanatarajaperumal@gmail.com" class="email-link">
+            elakkiyanatarajaperumal@gmail.com
+          </a>
+          <span>|</span>
+          <a 
+            href="https://www.linkedin.com/in/elakkiya-natarajaperumal" 
+            target="_blank" 
+            rel="noopener noreferrer"
+            class="email-link"
+          >
+            LinkedIn
+          </a>
+          <span>| JAVA DEVELOPER</span>
+        </p>
+        <p class="text-sm opacity-75">© NEON CORE 2025 | SYSTEMS ONLINE</p>
+      </div>
+    </div>
+  </footer>
+
+  <script>
+    const canvas = document.getElementById('matrix-bg');
+    const ctx = canvas.getContext('2d');
+    
+    function resizeCanvas() {
+      canvas.width = window.innerWidth;
+      canvas.height = window.innerHeight;
+    }
+    resizeCanvas();
+    
+    const chars = 'ABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789@#$%^&*()';
+    const fontSize = Math.max(12, window.innerWidth / 80);
+    let columns = Math.floor(canvas.width / fontSize);
+    const drops = Array(columns).fill(1);
+    
+    function drawMatrix() {
+      ctx.fillStyle = 'rgba(10,10,10,0.08)';
+      ctx.fillRect(0, 0, canvas.width, canvas.height);
+      ctx.fillStyle = '#00ffff';
+      ctx.font = fontSize + 'px monospace';
+      
+      for (let i = 0; i < drops.length; i++) {
+        const text = chars.charAt(Math.floor(Math.random() * chars.length));
+        ctx.fillText(text, i * fontSize, drops[i] * fontSize);
+        if (drops[i] * fontSize > canvas.height && Math.random() > 0.975)
+          drops[i] = 0;
+        drops[i]++;
+      }
+    }
+    
+    const matrixInterval = window.innerWidth > 768 ? 35 : 50;
+    setInterval(drawMatrix, matrixInterval);
+    
+    document.getElementById('download-resume').addEventListener('click', function(e) {
+      e.preventDefault();
+      const resumeContent = `
+ELAKKIYA NATARAJAPERUMAL
+MCA Student | Java Developer
+Dindigul, Tamil Nadu | elakkiyanatarajaperumal@gmail.com
+PSNA College of Engineering and Technology, Dindigul
+
+EDUCATION
+MCA (2024-2026) - PSNA College of Engineering and Technology, Dindigul - 95%
+B.Sc. Computer Science (2021-2024) - G.T.N. Arts College - 92%
+
+TECHNICAL SKILLS
+Java: 88% | Python: 65% | OCI Cloud: 87% | HTML/CSS/JS: 92%
+C++: 75% | C: 70%
+
+PROJECTS
+Cloud File Transfer System (using Java) - Automated secure cloud file transfers with scheduling and encryption.
+Mini Project – Anglophone Linguistic Analyzer - Flask-based web app to analyze emotion and tone in English text and suggest positive alternatives.
+
+CERTIFICATIONS
+✓ Oracle Cloud Infrastructure AI Foundations Associate
+✓ Python Essentials 1 & 2 (Cisco Networking Academy)
+✓ C++ Advanced Training
+✓ AI Workshop - Abhinav Devagupta
+
+LANGUAGES
+Tamil: Native | English: Professional | Hindi: Intermediate
+
+© 2025 Elakkiya Natarajaperumal
+      `;
+      
+      const blob = new Blob([resumeContent], { type: 'text/plain' });
+      const url = URL.createObjectURL(blob);
+      const a = document.createElement('a');
+      a.href = url;
+      a.download = 'Elakkiya_Natarajaperumal_Resume_2025.txt';
+      document.body.appendChild(a);
+      a.click();
+      document.body.removeChild(a);
+      URL.revokeObjectURL(url);
+      
+      const btn = e.currentTarget;
+      btn.style.background = 'rgba(0, 255, 0, 0.3)';
+      btn.innerHTML = '✅ DOWNLOADED';
+      setTimeout(() => {
+        btn.innerHTML = '📄 RESUME DOWNLOAD';
+        btn.style.background = '';
+      }, 2000);
+    });
+    
+    const sections = document.querySelectorAll('.section');
+    function reveal() {
+      const trigger = window.innerHeight * 0.8;
+      sections.forEach(sec => {
+        if (sec.getBoundingClientRect().top < trigger)
+          sec.classList.add('visible');
+      });
+    }
+    window.addEventListener('scroll', reveal);
+    reveal();
+    
+    window.addEventListener('resize', () => {
+      resizeCanvas();
+      columns = Math.floor(canvas.width / fontSize);
+      drops.length = 0;
+      for(let i = 0; i < columns; i++) drops.push(1);
+    });
+
+    // Toggle intro bubble on photo click
+    const heroPhoto = document.getElementById('hero-photo');
+    const introBubble = document.getElementById('intro-bubble');
+
+    if (heroPhoto && introBubble) {
+      heroPhoto.addEventListener('click', (e) => {
+        e.stopPropagation();
+        introBubble.classList.toggle('hidden');
+      });
+
+      document.addEventListener('click', (e) => {
+        if (!introBubble.contains(e.target)) {
+          introBubble.classList.add('hidden');
+        }
+      });
+    }
+  </script>
+</body>
+</html>
