@@ -100,7 +100,15 @@
       padding: 1rem 1.25rem;
       text-align: left;
       z-index: 20;
-      animation: bubble-in 0.25s ease-out;
+      opacity: 0;
+      visibility: hidden;
+      transition: opacity 0.4s ease, visibility 0s linear 0.4s;
+    }
+
+    .intro-bubble-visible {
+      opacity: 1;
+      visibility: visible;
+      transition: opacity 0.4s ease, visibility 0s linear 0s;
     }
 
     .intro-bubble::before {
@@ -125,13 +133,6 @@
       font-size: 0.85rem;
       color: #e5faff;
       line-height: 1.4;
-    }
-
-    .hidden { display: none; }
-
-    @keyframes bubble-in {
-      from { opacity: 0; transform: translate(-10px, -50%); }
-      to   { opacity: 1; transform: translate(0, -50%); }
     }
 
     @media (max-width: 768px) {
@@ -310,11 +311,11 @@
 
       <div class="hero-photo-wrapper">
         <img src="Elakkiya.jpeg" alt="Elakkiya Natarajaperumal" class="hero-photo" id="hero-photo" loading="lazy">
-        <div id="intro-bubble" class="intro-bubble hidden">
+        <div id="intro-bubble" class="intro-bubble">
           <p class="intro-title">Hi, I'm Elakkiya 👋</p>
           <p class="intro-text">
-            Curious Java dev focused on Writing Clean Code, Solving Problems smartly, and Building Apps that feel Effortless and Experimental Core.
-            into one experimental core.
+            Curious Java dev focused on writing clean code, solving problems smartly and
+            building apps that feel effortless yet experimental.
           </p>
         </div>
       </div>
@@ -329,21 +330,45 @@
         </a>
       </div>
       
-      <div class="glass-card inline-flex flex-col sm:flex-row items-center gap-3 px-6 py-4 max-w-2xl mx-auto">
-        <a href="mailto:elakkiyanatarajaperumal@gmail.com" class="email-link font-mono text-sm sm:text-base">
-          elakkiyanatarajaperumal@gmail.com
-        </a>
+      <!-- CONTACT OPTIONS -->
+      <div class="glass-card inline-flex flex-col sm:flex-row items-center gap-4 px-6 py-4 max-w-2xl mx-auto justify-center">
         <a 
-          href="https://www.linkedin.com/in/elakkiya-natarajaperumal" 
+          href="mailto:elakkiyanatarajaperumal@gmail.com"
+          class="flex items-center gap-2 px-4 py-2 rounded-full border border-cyan-400 text-cyan-300 hover:bg-cyan-400/10 hover:shadow-[0_0_18px_rgba(0,255,255,0.7)] transition"
+        >
+          <span class="text-lg">📧</span>
+          <span class="font-mono text-sm sm:text-base">Gmail</span>
+        </a>
+
+        <a 
+          href="https://www.linkedin.com/in/elakkiya-natarajaperumal"
           target="_blank" 
           rel="noopener noreferrer"
-          class="email-link font-mono text-sm sm:text-base"
+          class="flex items-center gap-2 px-4 py-2 rounded-full border border-cyan-400 text-cyan-300 hover:bg-cyan-400/10 hover:shadow-[0_0_18px_rgba(0,255,255,0.7)] transition"
         >
-          LinkedIn: /in/elakkiya-natarajaperumal
+          <span class="text-lg">🔗</span>
+          <span class="font-mono text-sm sm:text-base">LinkedIn</span>
         </a>
-        <span class="text-emerald-400 font-mono text-sm sm:text-base">
-          Dindigul | PSNA TECH
-        </span>
+
+        <a
+          href="https://github.com/elakkiyanataraperumal"
+          target="_blank"
+          rel="noopener noreferrer"
+          class="flex items-center gap-2 px-4 py-2 rounded-full border border-cyan-400 text-cyan-300 hover:bg-cyan-400/10 hover:shadow-[0_0_18px_rgba(0,255,255,0.7)] transition"
+        >
+          <span class="text-lg">🐙</span>
+          <span class="font-mono text-sm sm:text-base">GitHub</span>
+        </a>
+
+        <a
+          href="https://www.google.com/maps/search/?api=1&query=PSNA+College+of+Engineering+and+Technology%2C+Dindigul"
+          target="_blank"
+          rel="noopener noreferrer"
+          class="flex items-center gap-2 px-4 py-2 rounded-full border border-emerald-400 text-emerald-300 hover:bg-emerald-400/10 hover:shadow-[0_0_18px_rgba(0,255,136,0.7)] transition"
+        >
+          <span class="text-lg">📍</span>
+          <span class="font-mono text-sm sm:text-base">PSNA TECH</span>
+        </a>
       </div>
     </div>
   </header>
@@ -386,36 +411,70 @@
       <div class="text-center">
         <h2 class="text-4xl md:text-5xl font-black mb-12 neon-title">PROJECTS</h2>
 
-        <div class="glass-card max-w-4xl mx-auto mb-10">
-          <h3 class="text-2xl md:text-3xl font-black mb-4 text-magenta-400">
-            CLOUD FILE TRANSFER SYSTEM (USING JAVA)
+        <!-- 1. Cloud File Transfer System -->
+        <div class="glass-card max-w-4xl mx-auto mb-8 text-left">
+          <h3 class="text-2xl md:text-3xl font-black mb-2 text-magenta-400">
+            Cloud File Transfer System – Using Java (2023 – 2024)
           </h3>
-          <p class="text-gray-300 text-lg leading-relaxed">
-            Java-powered cloud automation with enterprise-grade security protocols, 
-            scheduling secure file transfers across cloud storage to improve reliability and efficiency.
+          <p class="text-gray-300 text-base md:text-lg leading-relaxed">
+            Java-powered cloud automation that schedules and secures file transfers between cloud
+            storage endpoints, reducing manual effort and improving reliability.
           </p>
-          <p class="mt-4 text-sm text-cyan-300">
+          <p class="mt-3 text-sm text-cyan-300">
             Technologies: Core Java, JDBC, Multi-threading, File I/O, Cloud APIs
           </p>
         </div>
 
-        <div class="glass-card max-w-4xl mx-auto">
-          <h3 class="text-2xl md:text-3xl font-black mb-4 text-emerald-400">
-            MINI PROJECT – ANGLOPHONE LINGUISTIC ANALYZER
+        <!-- 2. Password Manager -->
+        <div class="glass-card max-w-4xl mx-auto mb-8 text-left">
+          <h3 class="text-2xl md:text-3xl font-black mb-2 text-emerald-400">
+            Password Manager (2024)
           </h3>
-          <p class="text-gray-300 text-lg leading-relaxed">
-            Web-based emotion and sentiment analyzer for English sentences that classifies tone 
-            and suggests softer alternative phrases to improve communication quality.
+          <p class="text-gray-300 text-base md:text-lg leading-relaxed">
+            Secure password vault that encrypts credentials, generates strong passwords and keeps
+            logins organised for quick, safe access across multiple accounts.
           </p>
-          <p class="mt-4 text-sm text-cyan-300">
-            Technologies: Python, Flask, HTML, CSS, JavaScript, Basic NLP, Machine Learning model integration
+          <p class="mt-3 text-sm text-cyan-300">
+            Technologies: Python, Encryption, Hashing, Simple GUI / CLI
+          </p>
+        </div>
+
+        <!-- 3. Personal Portfolio -->
+        <div class="glass-card max-w-4xl mx-auto mb-8 text-left">
+          <h3 class="text-2xl md:text-3xl font-black mb-2 text-cyan-400">
+            Personal Portfolio (2025)
+          </h3>
+          <p class="text-gray-300 text-base md:text-lg leading-relaxed">
+            Cyberpunk-themed responsive portfolio that showcases projects, skills and interactive
+            UI elements, deployed as a static site with animated matrix background.
+          </p>
+          <p class="mt-3 text-sm text-cyan-300">
+            Technologies: HTML, CSS, JavaScript, GitHub Pages –
+            <a href="https://elakkiyanatarajaperumal.github.io/dev-elakkiya-codes/"
+               target="_blank" rel="noopener noreferrer" class="email-link">
+              Live Demo
+            </a>
+          </p>
+        </div>
+
+        <!-- 4. Anglophone Linguistic Analyzer -->
+        <div class="glass-card max-w-4xl mx-auto text-left">
+          <h3 class="text-2xl md:text-3xl font-black mb-2 text-aurora-400">
+            Anglophone Linguistic Analyzer (2025)
+          </h3>
+          <p class="text-gray-300 text-base md:text-lg leading-relaxed">
+            Web-based sentiment and emotion analyzer for English sentences that detects tone and
+            suggests softer, positive alternatives to improve everyday communication.
+          </p>
+          <p class="mt-3 text-sm text-cyan-300">
+            Technologies: Python, Flask, NLP, ML model integration, HTML, CSS, JavaScript
           </p>
         </div>
       </div>
     </div>
   </section>
 
-  <!-- SKILLS -->
+  <!-- TECHNICAL SKILLS -->
   <section id="skills" class="section section-padding">
     <div class="container">
       <h2 class="text-4xl md:text-5xl font-black text-center mb-16 neon-title">SKILL TERMINAL</h2>
@@ -439,6 +498,67 @@
           <h4 class="text-xl md:text-2xl font-bold mb-4 text-aurora-400">HTML/CSS/JS</h4>
           <div class="skill-bar mx-auto max-w-md"><div class="skill-bar-fill" style="width: 92%"></div></div>
           <span class="text-sm md:text-base text-gray-400 block mt-3">FRONTEND DEVELOPMENT</span>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- SOFT SKILLS -->
+  <section id="soft-skills" class="section section-padding bg-black/20">
+    <div class="container">
+      <h2 class="text-4xl md:text-5xl font-black text-center mb-12 neon-title">
+        SOFT SKILL MATRIX
+      </h2>
+
+      <div class="grid md:grid-cols-3 gap-6 lg:gap-8">
+        <div class="glass-card flex items-start gap-3">
+          <span class="text-2xl md:text-3xl">🤝</span>
+          <div>
+            <h3 class="text-lg md:text-xl font-bold text-cyan-300">Team Collaboration</h3>
+            <p class="text-sm md:text-base text-gray-300">
+              Works smoothly with cross‑functional teams, shares context clearly and keeps everyone aligned on goals.
+            </p>
+          </div>
+        </div>
+
+        <div class="glass-card flex items-start gap-3">
+          <span class="text-2xl md:text-3xl">📌</span>
+          <div>
+            <h3 class="text-lg md:text-xl font-bold text-emerald-300">Accountability</h3>
+            <p class="text-sm md:text-base text-gray-300">
+              Owns tasks end‑to‑end, sets realistic timelines and follows through until work is production‑ready.
+            </p>
+          </div>
+        </div>
+
+        <div class="glass-card flex items-start gap-3">
+          <span class="text-2xl md:text-3xl">👁️‍🗨️</span>
+          <div>
+            <h3 class="text-lg md:text-xl font-bold text-magenta-300">Visual Sense</h3>
+            <p class="text-sm md:text-base text-gray-300">
+              Designs clean layouts, balances colour and spacing, and focuses on interfaces that feel intuitive.
+            </p>
+          </div>
+        </div>
+
+        <div class="glass-card flex items-start gap-3">
+          <span class="text-2xl md:text-3xl">📚</span>
+          <div>
+            <h3 class="text-lg md:text-xl font-bold text-aurora-300">Learning Ability</h3>
+            <p class="text-sm md:text-base text-gray-300">
+              Picks up new tools quickly, experiments with side projects and converts feedback into improvements.
+            </p>
+          </div>
+        </div>
+
+        <div class="glass-card flex items-start gap-3">
+          <span class="text-2xl md:text-3xl">🗣️</span>
+          <div>
+            <h3 class="text-lg md:text-xl font-bold text-cyan-300">Communication</h3>
+            <p class="text-sm md:text-base text-gray-300">
+              Explains technical ideas in simple words, listens carefully and keeps stakeholders updated without noise.
+            </p>
+          </div>
         </div>
       </div>
     </div>
@@ -480,11 +600,22 @@
   <footer class="py-12 px-6 text-center text-gray-400 border-t border-white/10">
     <div class="container">
       <div class="space-y-4">
-        <p class="text-lg font-mono">DINDIGUL QUADRANT | PSNA TECH CORE | 2025</p>
-        <p class="font-mono text-base flex flex-col sm:flex-row items-center justify-center gap-1 sm:gap-2">
-          <a href="mailto:elakkiyanatarajaperumal@gmail.com" class="email-link">
-            elakkiyanatarajaperumal@gmail.com
+        <p class="text-lg font-mono">NEON CORE | 2025</p>
+
+        <p class="font-mono text-base flex flex-col sm:flex-row items-center justify-center gap-1 sm:gap-3">
+          <span>Current location:</span>
+          <a
+            href="https://www.google.com/maps/search/?api=1&query=Dindigul%2C+Tamil+Nadu"
+            target="_blank"
+            rel="noopener noreferrer"
+            class="email-link"
+          >
+            Dindigul, Tamil Nadu
           </a>
+        </p>
+
+        <p class="font-mono text-base flex flex-col sm:flex-row items-center justify-center gap-3">
+          <a href="mailto:elakkiyanatarajaperumal@gmail.com" class="email-link">Gmail</a>
           <span>|</span>
           <a 
             href="https://www.linkedin.com/in/elakkiya-natarajaperumal" 
@@ -494,8 +625,17 @@
           >
             LinkedIn
           </a>
-          <span>| JAVA DEVELOPER</span>
+          <span>|</span>
+          <a 
+            href="https://github.com/elakkiyanataraperumal"
+            target="_blank"
+            rel="noopener noreferrer"
+            class="email-link"
+          >
+            GitHub
+          </a>
         </p>
+
         <p class="text-sm opacity-75">© NEON CORE 2025 | SYSTEMS ONLINE</p>
       </div>
     </div>
@@ -552,12 +692,16 @@ C++: 75% | C: 70%
 
 PROJECTS
 Cloud File Transfer System (using Java) - Automated secure cloud file transfers with scheduling and encryption.
-Mini Project – Anglophone Linguistic Analyzer - Flask-based web app to analyze emotion and tone in English text and suggest positive alternatives.
+Password Manager - Secure, encrypted vault for managing strong passwords.
+Personal Portfolio - Cyberpunk-themed responsive portfolio hosted on GitHub Pages.
+Anglophone Linguistic Analyzer - Flask-based web app to analyse emotion and tone in English text and suggest positive alternatives.
 
 CERTIFICATIONS
-✓ Oracle Cloud Infrastructure AI Foundations Associate
-✓ Python Essentials 1 & 2 (Cisco Networking Academy)
+✓ Oracle Cloud Infrastructure AI Foundations Associate - Oracle
+✓ Python Essentials 1 & 2 - Cisco Networking Academy
 ✓ C++ Advanced Training
+✓ C Training
+✓ Java Beginner, Intermediate Completion Badges - Oracle
 ✓ AI Workshop - Abhinav Devagupta
 
 LANGUAGES
@@ -603,30 +747,26 @@ Tamil: Native | English: Professional | Hindi: Intermediate
       for(let i = 0; i < columns; i++) drops.push(1);
     });
 
-    // Intro bubble behaviour: auto-show on load for 5s, then hide; toggle on photo click
+    // Intro bubble: soft fade in/out + auto show on first load
     const heroPhoto = document.getElementById('hero-photo');
     const introBubble = document.getElementById('intro-bubble');
 
     if (heroPhoto && introBubble) {
-      const showBubble = () => introBubble.classList.remove('hidden');
-      const hideBubble = () => introBubble.classList.add('hidden');
+      const showBubble = () => introBubble.classList.add('intro-bubble-visible');
+      const hideBubble = () => introBubble.classList.remove('intro-bubble-visible');
 
-      // auto show shortly after load
       setTimeout(() => {
         showBubble();
-        // hide after 5 seconds
         setTimeout(() => {
           hideBubble();
         }, 5000);
       }, 500);
 
-      // toggle on photo click
       heroPhoto.addEventListener('click', (e) => {
         e.stopPropagation();
-        introBubble.classList.toggle('hidden');
+        introBubble.classList.toggle('intro-bubble-visible');
       });
 
-      // click outside hides
       document.addEventListener('click', (e) => {
         if (!introBubble.contains(e.target) && e.target !== heroPhoto) {
           hideBubble();
@@ -636,4 +776,3 @@ Tamil: Native | English: Professional | Hindi: Intermediate
   </script>
 </body>
 </html>
-
