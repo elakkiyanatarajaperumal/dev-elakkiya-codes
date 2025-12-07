@@ -87,6 +87,7 @@
       .hero-photo { width: 140px; height: 140px; }
     }
 
+    /* base: hidden, transparent */
     .intro-bubble {
       position: absolute;
       top: 50%;
@@ -100,7 +101,16 @@
       padding: 1rem 1.25rem;
       text-align: left;
       z-index: 20;
-      animation: bubble-in 0.25s ease-out;
+      opacity: 0;
+      visibility: hidden;
+      transition: opacity 0.4s ease, visibility 0s linear 0.4s;
+    }
+
+    /* visible + fade in/out */
+    .intro-bubble-visible {
+      opacity: 1;
+      visibility: visible;
+      transition: opacity 0.4s ease, visibility 0s linear 0s;
     }
 
     .intro-bubble::before {
@@ -125,13 +135,6 @@
       font-size: 0.85rem;
       color: #e5faff;
       line-height: 1.4;
-    }
-
-    .hidden { display: none; }
-
-    @keyframes bubble-in {
-      from { opacity: 0; transform: translate(-10px, -50%); }
-      to   { opacity: 1; transform: translate(0, -50%); }
     }
 
     @media (max-width: 768px) {
@@ -309,12 +312,12 @@
     <div class="container">
 
       <div class="hero-photo-wrapper">
-        <!-- place Elakkiya.jpeg next to index.html -->
         <img src="Elakkiya.jpeg" alt="Elakkiya Natarajaperumal" class="hero-photo" id="hero-photo" loading="lazy">
-        <div id="intro-bubble" class="intro-bubble hidden">
+        <div id="intro-bubble" class="intro-bubble">
           <p class="intro-title">Hi, I'm Elakkiya 👋</p>
           <p class="intro-text">
-            Curious Java dev focused on writing clean code, solving problems smartly, and building apps that feel effortless and experimental core.
+            Curious Java dev wiring neon UIs, cloud workflows and emotion-aware systems
+            into one experimental core.
           </p>
         </div>
       </div>
@@ -603,19 +606,33 @@ Tamil: Native | English: Professional | Hindi: Intermediate
       for(let i = 0; i < columns; i++) drops.push(1);
     });
 
-    // Toggle intro bubble on photo click
+    // Intro bubble: soft fade in/out + auto show on first load
     const heroPhoto = document.getElementById('hero-photo');
     const introBubble = document.getElementById('intro-bubble');
 
     if (heroPhoto && introBubble) {
+      const showBubble = () => introBubble.classList.add('intro-bubble-visible');
+      const hideBubble = () => introBubble.classList.remove('intro-bubble-visible');
+
+      // auto show soon after load
+      setTimeout(() => {
+        showBubble();
+        // hide after 5 seconds
+        setTimeout(() => {
+          hideBubble();
+        }, 5000);
+      }, 500);
+
+      // toggle on photo click
       heroPhoto.addEventListener('click', (e) => {
         e.stopPropagation();
-        introBubble.classList.toggle('hidden');
+        introBubble.classList.toggle('intro-bubble-visible');
       });
 
+      // click outside hides
       document.addEventListener('click', (e) => {
-        if (!introBubble.contains(e.target)) {
-          introBubble.classList.add('hidden');
+        if (!introBubble.contains(e.target) && e.target !== heroPhoto) {
+          hideBubble();
         }
       });
     }
